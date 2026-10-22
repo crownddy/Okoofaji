@@ -223,7 +223,8 @@
       --aw: calc(var(--ah) * .44);
       --pad: clamp(1.5rem, 6vw, 7rem);
       --gap: clamp(1rem, 4vw, 5rem);
-      --col: calc(min(100vw, 1800px) - 2 * var(--pad) - var(--aw) - var(--gap));
+      --navw: 54px;
+      --col: calc(min(100vw, 1800px) - 2 * var(--pad) - var(--aw) - 2 * var(--navw) - var(--gap));
       grid-template-columns: minmax(0, 1fr) auto;
       column-gap: var(--gap);
       padding-inline: var(--pad);
@@ -254,11 +255,13 @@
     .logo { grid-area: logo; --d: calc(var(--t) * .8); order: 0; margin-left: calc(var(--t) * .18); }
     .tagline-wrap { padding-inline: 0 .5em; margin-top: calc(var(--t) * .08); }
     .tagline { font-size: calc(var(--t) * .17); }
-    .arch-wrap { grid-column: 2; grid-row: 1; width: var(--aw); display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
-    .arch { flex: 0 0 100%; height: var(--ah); }
-    .nav { position: static; top: auto; margin: 0; width: 48px; height: 48px; }
+    .arch-wrap { grid-column: 2; grid-row: 1; width: var(--aw); margin-inline: var(--navw); }
+    .arch { height: var(--ah); }
+    .nav { top: 50%; width: 44px; height: 44px; margin-top: -22px; }
     .nav svg { width: 22px; height: 22px; }
-    .login { grid-column: 2; grid-row: 1; margin-top: calc(var(--ah) + 72px); }
+    .nav.prev { left: calc(var(--navw) * -1); }
+    .nav.next { right: calc(var(--navw) * -1); }
+    .login { grid-column: 2; grid-row: 1; margin-top: calc(var(--ah) + 12px); }
   }
   @media (prefers-reduced-motion: reduce) {
     .letter, .tagline, .logo { animation: none; }

@@ -88,10 +88,11 @@
     from { transform: translateX(110%); opacity: 0; }
     to   { transform: translateX(0); opacity: 1; }
   }
+  .arch-wrap { position: relative; width: min(70.4vw, 416px); }
   /* The arch: flat top bleeding off-screen, fully rounded bottom */
   .arch {
     position: relative;
-    width: min(70.4vw, 416px);
+    width: 100%;
     height: 80vh;
     height: 80svh;
     margin-top: 0;
@@ -161,12 +162,6 @@
   .nav:active { transform: scale(.94); }
   .nav:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
   .nav:disabled { opacity: .35; cursor: default; pointer-events: none; }
-  @media (min-width: 768px) {
-    .nav { width: 44px; height: 44px; margin-top: -22px; }
-    .nav svg { width: 22px; height: 22px; }
-    .nav.prev { left: 12px; }
-    .nav.next { right: 12px; }
-  }
   /* Login button under the arch */
   .login {
     z-index: 2;
@@ -220,13 +215,50 @@
     from { transform: translateX(-110%); opacity: 0; }
     to   { transform: translateX(0); opacity: 1; }
   }
-  /* Tablet, iPad and desktop: the same arch-and-circle composition as the phone, scaled by height */
+  /* Tablet, iPad and desktop: text on the left, arch-circle carousel on the right, arrows outside the arch */
   @media (min-width: 768px) {
-    .stage { --ah: min(86vh, 175vw); --ah: min(86svh, 175vw); --aw: calc(var(--ah) * .44); }
-    .copy { --t: calc(var(--aw) * .1775); width: var(--aw); padding-top: calc(var(--aw) * .12); }
-    .tagline { font-size: calc(var(--aw) * .0597); }
-    .arch { width: var(--aw); height: var(--ah); }
-    .login { margin-top: calc(var(--ah) + 12px); }
+    .stage {
+      --ah: min(80vh, 90vw);
+      --ah: min(80svh, 90vw);
+      --aw: calc(var(--ah) * .44);
+      --pad: clamp(1.5rem, 6vw, 7rem);
+      --gap: clamp(1rem, 4vw, 5rem);
+      --col: calc(min(100vw, 1800px) - 2 * var(--pad) - var(--aw) - var(--gap));
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: var(--gap);
+      padding-inline: var(--pad);
+      max-width: 1800px;
+      margin-inline: auto;
+    }
+    .stage > * { grid-area: auto; }
+    .copy {
+      --t: min(17vw, 27svh, calc(var(--col) / 2.6));
+      grid-column: 1;
+      grid-row: 1;
+      align-self: center;
+      width: auto;
+      padding-top: 0;
+      text-align: left;
+    }
+    .title {
+      display: grid;
+      grid-template-columns: auto auto;
+      grid-template-areas: "w1 w1" "w2 logo";
+      justify-content: start;
+      align-items: center;
+      gap: 0;
+      line-height: .88;
+    }
+    .title .w1 { grid-area: w1; justify-self: start; }
+    .title .w2 { grid-area: w2; }
+    .logo { grid-area: logo; --d: calc(var(--t) * .8); order: 0; margin-left: calc(var(--t) * .18); }
+    .tagline-wrap { padding-inline: 0 .5em; margin-top: calc(var(--t) * .08); }
+    .tagline { font-size: calc(var(--t) * .17); }
+    .arch-wrap { grid-column: 2; grid-row: 1; width: var(--aw); display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+    .arch { flex: 0 0 100%; height: var(--ah); }
+    .nav { position: static; top: auto; margin: 0; width: 48px; height: 48px; }
+    .nav svg { width: 22px; height: 22px; }
+    .login { grid-column: 2; grid-row: 1; margin-top: calc(var(--ah) + 72px); }
   }
   @media (prefers-reduced-motion: reduce) {
     .letter, .tagline, .logo { animation: none; }
@@ -357,6 +389,7 @@
     <div class="tagline-wrap"><p class="tagline">Ologbón dò ri éja mu,</p></div>
     <div class="tagline-wrap"><p class="tagline tagline-2">Ni orita Faji, a to do ri èja mu.</p></div>
   </div>
+  <div class="arch-wrap">
   <div class="arch">
     <div class="circle"></div>
     <div class="slides" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Carnival gallery">
@@ -366,6 +399,7 @@
       <img class="slide bleed" alt="" draggable="false" decoding="async">
       <img class="slide bleed" alt="" draggable="false" decoding="async">
     </div>
+  </div>
     <button class="nav prev" type="button" aria-label="Previous photo" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
     <button class="nav next" type="button" aria-label="Next photo" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
   </div>
